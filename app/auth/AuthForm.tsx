@@ -10,8 +10,10 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 const formSchema = z.object({
-    email: z.string(),
-    password: z.string()
+    email: z.string()
+        .min(1, { message: "Please fill in this field." })
+        .email("This is not a valid email."),
+    password: z.string().min(8)
 })
 
 export function AuthForm() {
