@@ -46,8 +46,9 @@ export function AuthForm() {
             toast({
                 title: "Success!", description: "Please check your email for a confirmation link!"
             })
+        } else {
+            window.location.href = "/"
         }
-
     }
 
     return (<><Form {...form}>
