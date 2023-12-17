@@ -12,9 +12,9 @@ export default function Nav() {
                         <Link href="/">
                             <Image src="/trackit-text-light.svg"
                                    alt="TrackIt Logo"
-                                   className="dark:invert"
-                                   width={120}
-                                   height={12}
+                                   className="w-28 dark:invert"
+                                   width={0}
+                                   height={0}
                                    priority
                             />
                         </Link>
