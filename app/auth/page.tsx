@@ -3,7 +3,7 @@ import { AuthForm } from "@/app/auth/AuthForm";
 
 export default function Auth() {
     return (
-        <main className="p-12">
+        <main className="py-12 sm:p-12">
             <div className="flex flex-col w-80 mx-auto xl:w-96">
                 <AuthForm/>
                 <div className="relative my-4">

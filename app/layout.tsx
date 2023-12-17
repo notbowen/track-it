@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-    <body className={`${inter.className} p-10 xl:p-14`}>
+    <body className={inter.className}>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <Nav/>
       {children}

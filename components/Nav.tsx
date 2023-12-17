@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Nav() {
     return (
-        <header>
+        <header className="p-10 xl:p-14">
             <nav>
                 <ul className="flex items-center justify-between">
                     <li>
