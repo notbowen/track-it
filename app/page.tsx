@@ -13,7 +13,7 @@ export default function Home() {
                   <Link href="https://github.com/notbowen/track-it" target="_blank">Source Code</Link>
               </Button>
               <Button>
-                  Get Started
+                  <Link href={"/auth"}>Get Started</Link>
               </Button>
           </div>
       </main>
