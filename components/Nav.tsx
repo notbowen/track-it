@@ -1,6 +1,7 @@
 "use client"
 import Image from "next/image";
 import { ModeToggle } from "@/components/theme/ModeToggle";
+import Link from "next/link";
 
 export default function Nav() {
     return (
@@ -8,13 +9,15 @@ export default function Nav() {
             <nav>
                 <ul className="flex items-center justify-between">
                     <li>
-                        <Image src="/trackit-text-light.svg"
-                               alt="TrackIt Logo"
-                               className="dark:invert"
-                               width={120}
-                               height={12}
-                               priority
-                        />
+                        <Link href="/">
+                            <Image src="/trackit-text-light.svg"
+                                   alt="TrackIt Logo"
+                                   className="dark:invert"
+                                   width={120}
+                                   height={12}
+                                   priority
+                            />
+                        </Link>
                     </li>
                     <li>
                         <ModeToggle/>
