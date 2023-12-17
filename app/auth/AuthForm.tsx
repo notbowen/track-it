@@ -54,7 +54,7 @@ export function AuthForm() {
                             <FormLabel>Password</FormLabel>
                             <FormControl>
                                 <Input placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-                                       type="current-password" {...field} />
+                                       type="password" autoComplete="on" {...field} />
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
