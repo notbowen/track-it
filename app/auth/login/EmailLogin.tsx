@@ -1,11 +1,11 @@
 "use server"
 
 import * as z from "zod";
-import { formSchema } from "@/app/auth/FormSchema";
+import { authSchema } from "@/app/auth/AuthSchema";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
-export async function EmailLogin(values: z.infer<typeof formSchema>) {
+export async function EmailLogin(values: z.infer<typeof authSchema>) {
     const email = values.email;
     const password = values.password;
     const cookieStore = cookies();

@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const formSchema = z.object({
+export const authSchema = z.object({
     email: z.string()
         .min(1, { message: "Please fill in this field." })
         .email("This is not a valid email."),

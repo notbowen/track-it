@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { formSchema } from "@/app/auth/FormSchema";
+import { authSchema } from "@/app/auth/AuthSchema";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -22,13 +22,13 @@ export function AuthForm() {
 
     const { toast } = useToast();
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema), defaultValues: {
+    const form = useForm<z.infer<typeof authSchema>>({
+        resolver: zodResolver(authSchema), defaultValues: {
             email: "", password: ""
         }
     });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof authSchema>) {
         setLoading(true);
         const error = mode === "login" ? await EmailLogin(values) : await EmailSignup(values)
         setLoading(false);
