@@ -1,7 +1,18 @@
 import AuthButtons from "@/app/auth/AuthButtons";
 import { AuthForm } from "@/app/auth/AuthForm";
+import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
-export default function Auth() {
+export default async function Auth() {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+        return redirect("/");
+    }
+
     return (
         <main className="py-12 sm:p-12">
             <div className="flex flex-col w-80 mx-auto xl:w-96">
