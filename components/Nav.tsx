@@ -1,7 +1,7 @@
-"use client"
 import Image from "next/image";
 import { ModeToggle } from "@/components/theme/ModeToggle";
 import Link from "next/link";
+import NavAuth from "@/components/NavAuth";
 
 export default function Nav() {
     return (
@@ -20,7 +20,10 @@ export default function Nav() {
                         </Link>
                     </li>
                     <li>
-                        <ModeToggle/>
+                        <div className="flex flex-row items-center gap-4">
+                            <NavAuth />
+                            <ModeToggle/>
+                        </div>
                     </li>
                 </ul>
             </nav>
