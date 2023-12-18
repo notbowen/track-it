@@ -40,6 +40,8 @@ export function AuthForm() {
                 description: error.message,
                 action: <ToastAction altText="Try Again">Try Again</ToastAction>
             })
+
+            return;
         }
 
         if (mode === "signup") {
