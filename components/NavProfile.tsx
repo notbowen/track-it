@@ -30,7 +30,6 @@ export default function NavProfile(data: any) {
         window.location.href = "/"
     }
 
-    console.log(data.data.first_name);
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
