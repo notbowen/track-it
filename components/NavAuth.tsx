@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import NavProfile from "@/components/NavProfile";
 
 export default async function NavAuth() {
     const cookieStore = cookies();
@@ -11,6 +12,12 @@ export default async function NavAuth() {
     const {
         data: { user }
     } = await supabase.auth.getUser();
+
+    if (!user) {
+        return (<Button><Link href={"/auth"}>Log In</Link></Button>)
+    }
+
+    const { data } = await supabase.from("users").select().single();
 
     const signOut = async () => {
         'use server'
@@ -21,14 +28,10 @@ export default async function NavAuth() {
         return redirect("/")
     }
 
-    return user ? (
-        <>
-            <p>{user.email}</p>
+    return (<>
+            <NavProfile data={data}/>
             <form action={signOut}>
                 <Button>Log Out</Button>
             </form>
-        </>
-    ) : (
-        <Button><Link href={"/auth"}>Log In</Link></Button>
-    )
+        </>)
 }
