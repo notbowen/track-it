@@ -34,9 +34,9 @@ export default function NavProfile(data: any) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-            <Avatar>
-                <AvatarFallback>{data.data.first_name.charAt(0).toUpperCase()}{data.data.last_name.charAt(0).toUpperCase()}</AvatarFallback>
-            </Avatar>
+                <Avatar>
+                    <AvatarFallback>{data.data.first_name.charAt(0).toUpperCase()}{data.data.last_name.charAt(0).toUpperCase()}</AvatarFallback>
+                </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel className="font-normal">
@@ -47,7 +47,7 @@ export default function NavProfile(data: any) {
                         </p>
                     </div>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator/>
                 <DropdownMenuItem>Profile</DropdownMenuItem>
                 <DropdownMenuItem onClick={signOut}>Logout</DropdownMenuItem>
             </DropdownMenuContent>

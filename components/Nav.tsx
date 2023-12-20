@@ -21,7 +21,7 @@ export default function Nav() {
                     </li>
                     <li>
                         <div className="flex flex-row items-center gap-4">
-                            <NavAuth />
+                            <NavAuth/>
                             <ModeToggle/>
                         </div>
                     </li>
