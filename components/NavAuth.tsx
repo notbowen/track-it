@@ -16,9 +16,7 @@ export default async function NavAuth() {
         return (<Button><Link href={"/auth"}>Log In</Link></Button>)
     }
 
-    const { data } = await supabase.from("users").select().single();
-
     return (<>
-        <NavProfile data={data}/>
+        <NavProfile/>
     </>)
 }
