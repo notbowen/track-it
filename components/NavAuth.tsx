@@ -13,7 +13,7 @@ export default async function NavAuth() {
     } = await supabase.auth.getUser();
 
     if (!user) {
-        return (<Button><Link href={"/auth"}>Log In</Link></Button>)
+        return (<Button><Link href={"/auth"} shallow>Log In</Link></Button>)
     }
 
     return (<>
