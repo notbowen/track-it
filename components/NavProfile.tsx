@@ -11,6 +11,7 @@ import {
 import { LogOut, User } from "lucide-react";
 import { cookies, headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
+import Link from "next/link";
 
 export default async function NavProfile() {
     const cookieStore = cookies();
@@ -54,18 +55,20 @@ export default async function NavProfile() {
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator/>
-                <DropdownMenuItem>
-                    <User className="mr-2 h-4 w-4"/>
-                    Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <form action={signOut} className="w-full">
+                <Link href={"/profile"} shallow>
+                    <DropdownMenuItem>
+                        <User className="mr-2 h-4 w-4"/>
+                        Profile
+                    </DropdownMenuItem>
+                </Link>
+                <form action={signOut}>
+                    <DropdownMenuItem>
                         <button className="flex flex-row cursor-default">
                             <LogOut className="mr-2 h-4 w-4"/>
                             <span>Logout</span>
                         </button>
-                    </form>
-                </DropdownMenuItem>
+                    </DropdownMenuItem>
+                </form>
             </DropdownMenuContent>
         </DropdownMenu>
     )
