@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "@/components/ui/use-toast";
@@ -87,6 +87,7 @@ export function ProfileForm({ first_name, last_name }: Props) {
                             <FormControl>
                                 <Input placeholder="John" {...field} />
                             </FormControl>
+                            <FormMessage/>
                         </FormItem>
                     )}
                 />
@@ -99,6 +100,7 @@ export function ProfileForm({ first_name, last_name }: Props) {
                             <FormControl>
                                 <Input placeholder="Doe" {...field} />
                             </FormControl>
+                            <FormMessage/>
                         </FormItem>
                     )}
                 />
