@@ -4,7 +4,7 @@ import { SidebarNav } from "@/components/forms/SidebarNav";
 
 const sidebarNavItems = [
     {
-        title: "Account",
+        title: "Profile",
         href: "/profile"
     },
     {
