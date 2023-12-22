@@ -1,6 +1,9 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { SidebarNav } from "@/components/forms/SidebarNav";
+import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 const sidebarNavItems = [
     {
@@ -21,7 +24,15 @@ interface ProfileLayoutProps {
     children: React.ReactNode
 }
 
-export default function ProfileLayout({ children }: ProfileLayoutProps) {
+export default async function ProfileLayout({ children }: ProfileLayoutProps) {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+        return redirect("/auth");
+    }
+
     return (
         <div className="space-y-6 px-10 sm:px-24 pb-16 md:block">
             <div className="space-y-0.5">
