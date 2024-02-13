@@ -25,9 +25,8 @@ export default async function NavProfile({ user }: { user: AuthUser }) {
     }
 
     const { data } = await supabase.from("users").select().eq("id", user.id).single();
-    console.log(data);
-    if (!data && pathname !== "/auth/setup") {
-        return redirect("/auth/setup")
+    if (!data) {
+        return pathname !== "/auth/setup" ? redirect("/auth/setup") : <></>
     }
 
     const signOut = async () => {

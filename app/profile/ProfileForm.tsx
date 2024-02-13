@@ -52,10 +52,20 @@ export function ProfileForm({ first_name, last_name }: Props) {
 
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+            toast({
+                variant: "destructive",
+                title: "Could not get current user!",
+                description: "You prolly got signed out. Try logging in again?"
+            })
+            router.refresh();
+            return;
+        }
+
         const { error } = await supabase.from("users").update({
             first_name: data.first_name,
             last_name: data.last_name
-        }).eq("id", user?.id);
+        }).eq("id", user.id);
 
         if (error) {
             toast({

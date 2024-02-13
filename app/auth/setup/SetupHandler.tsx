@@ -18,6 +18,7 @@ export default async function SetupHandler(values: z.infer<typeof setupSchema>) 
     const first_name = values.first_name;
     const last_name = values.last_name;
 
+    // @ts-ignore
     const { error } = await supabase.from("users").insert({
         id: user.id,
         email: user.email,
