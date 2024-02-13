@@ -7,7 +7,8 @@ export default async function Profile() {
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
 
-    const { data: { first_name, last_name } } = await supabase.from("users").select().single();
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { first_name, last_name } } = await supabase.from("users").select().eq("id", user?.id).single();
 
     return (<div className="space-y-6">
         <div>

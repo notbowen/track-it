@@ -12,7 +12,7 @@ export default async function Setup() {
         return redirect("/auth");
     }
 
-    const { data } = await supabase.from("users").select().single();
+    const { data } = await supabase.from("users").select().eq("id", user.id).single();
 
     if (data) {
         return redirect("/");

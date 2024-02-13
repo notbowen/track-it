@@ -12,8 +12,9 @@ import { LogOut, User } from "lucide-react";
 import { cookies, headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import { AuthUser } from "@supabase/supabase-js";
 
-export default async function NavProfile() {
+export default async function NavProfile({ user }: { user: AuthUser }) {
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
 
@@ -23,7 +24,8 @@ export default async function NavProfile() {
         return <></>
     }
 
-    const { data } = await supabase.from("users").select().single();
+    const { data } = await supabase.from("users").select().eq("id", user.id).single();
+    console.log(data);
     if (!data && pathname !== "/auth/setup") {
         return redirect("/auth/setup")
     }

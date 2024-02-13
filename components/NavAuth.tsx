@@ -17,6 +17,6 @@ export default async function NavAuth() {
     }
 
     return (<>
-        <NavProfile/>
+        <NavProfile user={user}/>
     </>)
 }
