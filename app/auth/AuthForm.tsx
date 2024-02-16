@@ -13,14 +13,11 @@ import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { EmailLogin } from "@/app/auth/login/EmailLogin";
 import { EmailSignup } from "@/app/auth/signup/EmailSignup";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+import { toast } from "sonner";
 
 export function AuthForm() {
     const [mode, setMode] = useState<"login" | "signup">("login");
     const [loading, setLoading] = useState(false);
-
-    const { toast } = useToast();
 
     const form = useForm<z.infer<typeof authSchema>>({
         resolver: zodResolver(authSchema), defaultValues: {
@@ -34,20 +31,12 @@ export function AuthForm() {
         setLoading(false);
 
         if (error) {
-            toast({
-                variant: "destructive",
-                title: "Error",
-                description: error.message,
-                action: <ToastAction altText="Try Again">Try Again</ToastAction>
-            })
-
+            toast.error("Error", { description: error.message })
             return;
         }
 
         if (mode === "signup") {
-            toast({
-                title: "Success!", description: "Please check your email for a confirmation link!"
-            })
+            toast.success("Success!", { description: "Please check your email for a confirmation link!" })
         } else {
             window.location.href = "/"
         }

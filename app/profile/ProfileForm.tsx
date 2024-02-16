@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { createClient } from "@/utils/supabase/client";
-import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const profileFormSchema = z.object({
     first_name: z
@@ -53,11 +53,7 @@ export function ProfileForm({ first_name, last_name }: Props) {
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-            toast({
-                variant: "destructive",
-                title: "Could not get current user!",
-                description: "You prolly got signed out. Try logging in again?"
-            })
+            toast.error("Could not get current user!", { description: "You prolly got signed out. Try logging in again?" })
             router.refresh();
             return;
         }
@@ -68,17 +64,9 @@ export function ProfileForm({ first_name, last_name }: Props) {
         }).eq("id", user.id);
 
         if (error) {
-            toast({
-                variant: "destructive",
-                title: "Something went wrong!",
-                description: error.message
-            })
+            toast.error("Something went wrong!", { description: error.message })
         } else {
-            toast({
-                title: "Success!",
-                description: "Your profile has been updated."
-            })
-
+            toast.success("Success!", { description: "Your profile has been updated." })
             router.refresh(); // Trigger page refresh to update navbar
         }
 
