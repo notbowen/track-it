@@ -8,14 +8,12 @@ import * as z from "zod";
 import { setupSchema } from "@/app/auth/setup/SetupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SetupHandler from "@/app/auth/setup/SetupHandler";
-import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { ToastAction } from "@/components/ui/toast";
+import { toast } from "sonner";
 
 export default function SetupForm() {
     const [loading, setLoading] = useState(false);
-    const { toast } = useToast();
 
     const form = useForm<z.infer<typeof setupSchema>>({
         resolver: zodResolver(setupSchema), defaultValues: {
@@ -33,13 +31,7 @@ export default function SetupForm() {
             return;
         }
 
-        toast({
-            variant: "destructive",
-            title: "Something went wrong!",
-            description: error.message,
-            action: <ToastAction altText="Try Again">Try Again</ToastAction>
-        })
-
+        toast.error("Something went wrong!", { description: error.message });
     }
 
     return (<Form {...form}>

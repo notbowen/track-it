@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { createClient } from "@/utils/supabase/client";
-import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const passwordFormSchema = z.object({
     password: z.string().min(8, { message: "Password cannot be shorter than 8 characters." }),
@@ -35,16 +35,9 @@ export function PasswordForm() {
         const { error } = await supabase.auth.updateUser({ password: data.password });
 
         if (error) {
-            toast({
-                variant: "destructive",
-                title: "Something went wrong!",
-                description: error.message
-            })
+            toast.error(error.message)
         } else {
-            toast({
-                title: "Success!",
-                description: "Your password has been updated."
-            })
+            toast.success("Your password has been updated.")
         }
 
         setUpdating(false);
