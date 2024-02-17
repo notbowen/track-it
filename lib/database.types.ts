@@ -72,24 +72,21 @@ export type Database = {
       tasks: {
         Row: {
           created_at: string
-          description: string | null
           due_date: string
           id: string
-          title: string
+          name: string
         }
         Insert: {
           created_at?: string
-          description?: string | null
           due_date: string
           id?: string
-          title: string
+          name: string
         }
         Update: {
           created_at?: string
-          description?: string | null
           due_date?: string
           id?: string
-          title?: string
+          name?: string
         }
         Relationships: []
       }
@@ -162,22 +159,22 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          status: Database["public"]["Enums"]["progress"]
           task_id: string
-          to_do_date: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
+          status?: Database["public"]["Enums"]["progress"]
           task_id: string
-          to_do_date?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           id?: number
+          status?: Database["public"]["Enums"]["progress"]
           task_id?: string
-          to_do_date?: string | null
           user_id?: string
         }
         Relationships: [
@@ -205,7 +202,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      progress: "Not Started" | "In Progress" | "Completed"
     }
     CompositeTypes: {
       [_ in never]: never
