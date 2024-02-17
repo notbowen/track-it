@@ -49,17 +49,23 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          name: string
           only_admin_modify: boolean
+          short_form: string
         }
         Insert: {
           created_at?: string
           id?: string
+          name: string
           only_admin_modify: boolean
+          short_form: string
         }
         Update: {
           created_at?: string
           id?: string
+          name?: string
           only_admin_modify?: boolean
+          short_form?: string
         }
         Relationships: []
       }
@@ -108,7 +114,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "users_id_fkey"
+            foreignKeyName: "public_users_id_fkey"
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
@@ -158,18 +164,21 @@ export type Database = {
           id: number
           task_id: string
           to_do_date: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           task_id: string
           to_do_date?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: number
           task_id?: string
           to_do_date?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -177,6 +186,13 @@ export type Database = {
             columns: ["task_id"]
             isOneToOne: false
             referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_users_tasks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           }
         ]
