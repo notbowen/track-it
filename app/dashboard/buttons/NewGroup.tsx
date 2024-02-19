@@ -101,21 +101,51 @@ function NewGroupForm({ className }: ComponentProps<"form">) {
             return;
         }
 
-        const { error } = await supabase.from("groups").insert({
+        // TODO: Make inserting data with error checking a method
+        const { data, error: initial_error } = await supabase.from("groups").insert({
             name: values.name,
             short_form: values.short_form,
             allow_all: !!values.allow_all,
             created_by: user.id
+        }).select().single();
+
+        if (initial_error || !data) {
+            toast.error("Something went wrong!", {
+                description: initial_error?.message ?? "Could not get returned group ID!"
+            })
+
+            setLoading(false);
+            return
+        }
+
+        const { error: users_error } = await supabase.from("users_groups").insert({
+            group_id: data.id,
+            user_id: user.id
         })
 
-        setLoading(false);
-        if (error) {
+        if (users_error) {
             toast.error("Something went wrong!", {
-                description: error.message
+                description: users_error.message
             })
-        } else {
-            toast.success("Successfully added group!")
+            setLoading(false);
+            return
         }
+
+        const { error: admin_error } = await supabase.from("admins_groups").insert({
+            group_id: data.id,
+            user_id: user.id
+        })
+
+        if (admin_error) {
+            toast.error("Something went wrong!", {
+                description: admin_error.message
+            })
+            setLoading(false);
+            return
+        }
+
+        toast.success("Successfully added group!")
+        setLoading(false);
     }
 
     return (
