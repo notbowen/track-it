@@ -1,26 +1,9 @@
-import { columns, Task } from "./table/columns"
+import { columns } from "./table/columns"
 import { DataTable } from "./table/data-table"
 import DashboardButtons from "@/app/dashboard/buttons/DashboardButtons";
 import { cookies } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-
-async function getData(): Promise<Task[]> {
-    return [
-        {
-            module: "WLSS",
-            name: "WLSS Assignment",
-            due_date: new Date(2024, 2, 18),
-            progress: "Not Started"
-        },
-        {
-            module: "CTG",
-            name: "CTG Assignment",
-            due_date: new Date(2024, 2, 4),
-            progress: "Not Started"
-        },
-    ]
-}
 
 export default async function Dashboard() {
     const cookieStore = cookies();
@@ -31,7 +14,35 @@ export default async function Dashboard() {
         return redirect("/auth");
     }
 
-    const tasks = await getData()
+    const { data, error } = await supabase.from("tasks").select("*, groups(short_form), status(status)");
+    if (error || !data) {
+        return (<>
+            <h2 className="text-2xl font-bold">Something went wrong!</h2>
+            <p>{error?.message ?? "Could not fetch data!"}</p>
+        </>)
+    }
+
+    for (const task of data) {
+        if (task.status[0]?.status) continue;
+        await supabase.from("status").insert({
+            user_id: user.id,
+            task_id: task.id,
+            status: "Not Started"
+        })
+    }
+
+    const tasks = data.map(task => {
+            const status = task.status[0]?.status ?? "Not Started"
+
+            return {
+                task_id: task.id,
+                module: task.groups?.short_form ?? "",
+                name: task.name,
+                due_date: new Date(task.due_date),
+                progress: status
+            }
+        }
+    )
 
     return (
         <div className="flex h-full max-w-screen-xl mx-auto flex-1 flex-col space-y-8 p-8">

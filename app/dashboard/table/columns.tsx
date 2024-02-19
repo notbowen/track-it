@@ -14,8 +14,10 @@ import { MoreHorizontal } from "lucide-react";
 import { DataTableColumnHeader } from "@/app/dashboard/table/data-table-column-header";
 import { Database } from "@/lib/database.types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { createClient } from "@/utils/supabase/client";
 
 export type Task = {
+    task_id: string,
     module: string,
     name: string,
     due_date: Date,
@@ -62,8 +64,11 @@ export const columns: ColumnDef<Task>[] = [
         ),
         cell: ({ row }) => {
             const initial_status = row.getValue("progress") as string;
-            const updateStatus = async (status: string) => {
-                console.log(status);
+            const updateStatus = async (status: Database["public"]["Enums"]["progress"]) => {
+                const supabase = createClient();
+                await supabase.from("status").update({
+                    status
+                }).eq('task_id', row.original.task_id)
             }
 
             return <Select onValueChange={updateStatus}>
