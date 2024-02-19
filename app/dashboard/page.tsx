@@ -1,6 +1,6 @@
-import { columns, Task } from "./columns"
-import { DataTable } from "./data-table"
-import DashboardButtons from "@/app/dashboard/DashboardButtons";
+import { columns, Task } from "./table/columns"
+import { DataTable } from "./table/data-table"
+import DashboardButtons from "@/app/dashboard/buttons/DashboardButtons";
 import { cookies } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -31,7 +31,7 @@ export default async function Dashboard() {
         return redirect("/auth");
     }
 
-    const data = await getData()
+    const tasks = await getData()
 
     return (
         <div className="flex h-full max-w-screen-xl mx-auto flex-1 flex-col space-y-8 p-8">
@@ -46,7 +46,7 @@ export default async function Dashboard() {
                     <DashboardButtons/>
                 </div>
             </div>
-            <DataTable data={data} columns={columns}/>
+            <DataTable data={tasks} columns={columns}/>
         </div>
     )
 }
