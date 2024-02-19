@@ -12,10 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
     DrawerDescription,
-    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger
@@ -60,7 +58,7 @@ export function NewTask() {
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
-                <Button variant="outline">New Task</Button>
+                <Button>New Task</Button>
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader className="text-left">
@@ -69,12 +67,7 @@ export function NewTask() {
                         Create a new task here.
                     </DrawerDescription>
                 </DrawerHeader>
-                <NewTaskForm className="px-4"/>
-                <DrawerFooter className="pt-2">
-                    <DrawerClose asChild>
-                        <Button variant="outline">Cancel</Button>
-                    </DrawerClose>
-                </DrawerFooter>
+                <NewTaskForm className="p-4"/>
             </DrawerContent>
         </Drawer>
     )

@@ -14,10 +14,8 @@ import {
 } from "@/components/ui/dialog"
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
     DrawerDescription,
-    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
@@ -66,12 +64,7 @@ export function NewGroup() {
                         Create a new tracker for a module here.
                     </DrawerDescription>
                 </DrawerHeader>
-                <NewGroupForm className="px-4"/>
-                <DrawerFooter className="pt-2">
-                    <DrawerClose asChild>
-                        <Button variant="outline">Cancel</Button>
-                    </DrawerClose>
-                </DrawerFooter>
+                <NewGroupForm className="p-4"/>
             </DrawerContent>
         </Drawer>
     )
