@@ -12,7 +12,7 @@ import {
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
 import { useState } from "react";
-import { DataTablePagination } from "@/app/dashboard/data-table-pagination";
+import { DataTablePagination } from "@/app/dashboard/table/data-table-pagination";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]

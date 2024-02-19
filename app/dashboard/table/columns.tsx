@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { DataTableColumnHeader } from "@/app/dashboard/data-table-column-header";
+import { DataTableColumnHeader } from "@/app/dashboard/table/data-table-column-header";
 import { Database } from "@/lib/database.types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
