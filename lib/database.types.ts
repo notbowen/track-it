@@ -47,45 +47,135 @@ export type Database = {
       }
       groups: {
         Row: {
+          allow_all: boolean
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+          short_form: string
+        }
+        Insert: {
+          allow_all: boolean
+          created_at?: string
+          created_by: string
+          id?: string
+          name: string
+          short_form: string
+        }
+        Update: {
+          allow_all?: boolean
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+          short_form?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_groups_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      invites: {
+        Row: {
+          created_at: string
+          group_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          group_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          group_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_invites_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      status: {
+        Row: {
           created_at: string
           id: string
-          only_admin_modify: boolean
+          status: Database["public"]["Enums"]["progress"]
+          task_id: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
-          only_admin_modify: boolean
+          status: Database["public"]["Enums"]["progress"]
+          task_id: string
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: string
-          only_admin_modify?: boolean
+          status?: Database["public"]["Enums"]["progress"]
+          task_id?: string
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_status_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_status_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       tasks: {
         Row: {
           created_at: string
-          description: string | null
           due_date: string
+          group_id: string
           id: string
-          title: string
+          name: string
         }
         Insert: {
           created_at?: string
-          description?: string | null
           due_date: string
+          group_id: string
           id?: string
-          title: string
+          name: string
         }
         Update: {
           created_at?: string
-          description?: string | null
           due_date?: string
+          group_id?: string
           id?: string
-          title?: string
+          name?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_tasks_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       users: {
         Row: {
@@ -108,7 +198,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "users_id_fkey"
+            foreignKeyName: "public_users_id_fkey"
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
@@ -152,44 +242,28 @@ export type Database = {
           }
         ]
       }
-      users_tasks: {
-        Row: {
-          created_at: string
-          id: number
-          task_id: string
-          to_do_date: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          task_id: string
-          to_do_date?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          task_id?: string
-          to_do_date?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_users_tasks_task_id_fkey"
-            columns: ["task_id"]
-            isOneToOne: false
-            referencedRelation: "tasks"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_user_in_group: {
+        Args: {
+          _user_id: string
+          _group_id: string
+        }
+        Returns: boolean
+      }
+      is_user_in_task: {
+        Args: {
+          _user_id: string
+          _task_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      progress: "Not Started" | "In Progress" | "Completed"
     }
     CompositeTypes: {
       [_ in never]: never

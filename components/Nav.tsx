@@ -5,7 +5,7 @@ import NavAuth from "@/components/NavAuth";
 
 export default function Nav() {
     return (
-        <header className="p-10 xl:p-14">
+        <header className="px-6 p-10 sm:p-10 xl:p-14">
             <nav>
                 <ul className="flex items-center justify-between">
                     <li>
