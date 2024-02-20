@@ -14,7 +14,10 @@ export default async function Dashboard() {
         return redirect("/auth");
     }
 
-    const { data, error } = await supabase.from("tasks").select("*, groups(short_form), status(status)");
+    const {
+        data,
+        error
+    } = await supabase.from("tasks").select("*, groups(short_form, admins_groups(user_id)), status(user_id, status)");
     if (error || !data) {
         return (<>
             <h2 className="text-2xl font-bold">Something went wrong!</h2>
@@ -23,7 +26,7 @@ export default async function Dashboard() {
     }
 
     for (const task of data) {
-        if (task.status[0]?.status) continue;
+        if (task.status.find(stat => stat.user_id === user.id)) continue;
         await supabase.from("status").insert({
             user_id: user.id,
             task_id: task.id,
@@ -32,14 +35,18 @@ export default async function Dashboard() {
     }
 
     const tasks = data.map(task => {
-            const status = task.status[0]?.status ?? "Not Started"
+        const status = task.status.find(stat => stat.user_id === user.id)?.status ?? "Not Started"
 
-            return {
-                task_id: task.id,
-                module: task.groups?.short_form ?? "",
-                name: task.name,
-                due_date: new Date(task.due_date),
-                progress: status
+        return {
+            task_id: task.id,
+            module: task.groups?.short_form ?? "",
+            name: task.name,
+            due_date: new Date(task.due_date),
+            progress: status,
+            not_started: task.status.filter(stat => stat.status === "Not Started").length,
+            in_progress: task.status.filter(stat => stat.status === "In Progress").length,
+            completed: task.status.filter(stat => stat.status === "Completed").length,
+            is_admin: !!task.groups?.admins_groups[0]?.user_id
             }
         }
     )

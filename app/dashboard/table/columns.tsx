@@ -21,7 +21,11 @@ export type Task = {
     module: string,
     name: string,
     due_date: Date,
-    progress: Database["public"]["Enums"]["progress"]
+    progress: Database["public"]["Enums"]["progress"],
+    not_started: number,
+    in_progress: number,
+    completed: number,
+    is_admin: boolean
 }
 
 export const columns: ColumnDef<Task>[] = [
@@ -63,7 +67,7 @@ export const columns: ColumnDef<Task>[] = [
             <DataTableColumnHeader column={column} title="Progress"/>
         ),
         cell: ({ row }) => {
-            const initial_status = row.getValue("progress") as string;
+            const initial_status = row.original.progress;
             const updateStatus = async (status: Database["public"]["Enums"]["progress"]) => {
                 const supabase = createClient();
                 await supabase.from("status").update({
@@ -85,7 +89,9 @@ export const columns: ColumnDef<Task>[] = [
     },
     {
         id: "actions",
-        cell: () => {
+        cell: ({ row }) => {
+            const task = row.original;
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -96,11 +102,14 @@ export const columns: ColumnDef<Task>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Stalk your Classmates</DropdownMenuLabel>
-                        <DropdownMenuItem>5 Completed</DropdownMenuItem>
-                        <DropdownMenuItem>3 In Progress</DropdownMenuItem>
-                        <DropdownMenuItem>20 Incomplete</DropdownMenuItem>
-                        <DropdownMenuSeparator/>
-                        <DropdownMenuItem>Delete Task (for everyone)</DropdownMenuItem>
+                        <DropdownMenuItem>{task.completed} Completed</DropdownMenuItem>
+                        <DropdownMenuItem>{task.in_progress} In Progress</DropdownMenuItem>
+                        <DropdownMenuItem>{task.not_started} Incomplete</DropdownMenuItem>
+                        {task.is_admin && <>
+                            <DropdownMenuSeparator/>
+                            <DropdownMenuItem>Delete Task (for everyone)</DropdownMenuItem>
+                        </>
+                        }
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
