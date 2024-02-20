@@ -54,7 +54,7 @@ export const columns: ColumnDef<Task>[] = [
                 day: "numeric",
                 month: "short",
                 year: "numeric"
-            })} ({display})</div>
+            })} [{display}]</div>
         }
     },
     {
