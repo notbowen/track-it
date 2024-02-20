@@ -254,6 +254,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_user_in_task: {
+        Args: {
+          _user_id: string
+          _task_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       progress: "Not Started" | "In Progress" | "Completed"
