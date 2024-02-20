@@ -54,14 +54,14 @@ export default async function Dashboard() {
 
     return (
         <div className="flex h-full max-w-screen-xl mx-auto flex-1 flex-col space-y-8 p-8">
-            <div className="flex items-center justify-between space-y-2">
+            <div className="flex items-center justify-between space-y-2 gap-6">
                 <div>
                     <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
                     <p className="text-muted-foreground">
                         Here&apos;s a list of upcoming tasks!
                     </p>
                 </div>
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                     <DashboardButtons groups={groups}/>
                 </div>
             </div>
