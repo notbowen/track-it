@@ -144,9 +144,11 @@ function NewTaskForm({ className, groups, setOpen }: TaskProp) {
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    {groups.map(group => (
+                                    {groups.length !== 0 ? groups.map(group => (
                                         <SelectItem key={group.id} value={group.id}>{group.name}</SelectItem>
-                                    ))}
+                                    )) : (
+                                        <SelectItem disabled={true} value="none">No modules found!</SelectItem>
+                                    )}
                                 </SelectContent>
                             </Select>
                         </FormItem>
