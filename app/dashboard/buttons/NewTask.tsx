@@ -31,8 +31,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { Database } from "@/lib/database.types";
 
-export function NewTask() {
+interface Groups {
+    groups: Database["public"]["Tables"]["groups"]["Row"][];
+}
+
+export function NewTask({ groups }: Groups) {
     const [open, setOpen] = React.useState(false)
     const isDesktop = useMediaQuery("(min-width: 768px)")
 
@@ -49,7 +54,7 @@ export function NewTask() {
                             Create a new task here.
                         </DialogDescription>
                     </DialogHeader>
-                    <NewTaskForm/>
+                    <NewTaskForm groups={groups}/>
                 </DialogContent>
             </Dialog>
         )
@@ -67,13 +72,18 @@ export function NewTask() {
                         Create a new task here.
                     </DrawerDescription>
                 </DrawerHeader>
-                <NewTaskForm className="p-4"/>
+                <NewTaskForm className="p-4" groups={groups}/>
             </DrawerContent>
         </Drawer>
     )
 }
 
-function NewTaskForm({ className }: React.ComponentProps<"form">) {
+interface TaskProp {
+    className?: string,
+    groups: Database["public"]["Tables"]["groups"]["Row"][];
+}
+
+function NewTaskForm({ className, groups }: TaskProp) {
     const [loading, setLoading] = useState(false);
 
     const taskSchema = z.object({
@@ -129,9 +139,9 @@ function NewTaskForm({ className }: React.ComponentProps<"form">) {
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    <SelectItem value="553bc1b9-533c-40c7-8583-3023a7599ce0">Windows Linux Server
-                                        Security</SelectItem>
-                                    <SelectItem value="ef2a8883-5b48-475f-bc13-e80c6dedc57f">Cryptography</SelectItem>
+                                    {groups.map(group => (
+                                        <SelectItem key={group.id} value={group.id}>{group.name}</SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </FormItem>

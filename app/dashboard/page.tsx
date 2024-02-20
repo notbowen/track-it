@@ -44,6 +44,14 @@ export default async function Dashboard() {
         }
     )
 
+    const { data: groups, error: groups_error } = await supabase.from("groups").select();
+    if (groups_error || !groups) {
+        return (<>
+            <h2 className="text-2xl font-bold">Something went wrong!</h2>
+            <p>{groups_error?.message ?? "Could not fetch data!"}</p>
+        </>)
+    }
+
     return (
         <div className="flex h-full max-w-screen-xl mx-auto flex-1 flex-col space-y-8 p-8">
             <div className="flex items-center justify-between space-y-2">
@@ -54,7 +62,7 @@ export default async function Dashboard() {
                     </p>
                 </div>
                 <div className="flex flex-row gap-2">
-                    <DashboardButtons/>
+                    <DashboardButtons groups={groups}/>
                 </div>
             </div>
             <DataTable data={tasks} columns={columns}/>
