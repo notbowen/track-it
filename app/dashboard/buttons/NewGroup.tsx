@@ -1,4 +1,4 @@
-import { ComponentProps, useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import * as z from "zod"
 
 import { cn } from "@/lib/utils"
@@ -28,6 +28,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function NewGroup() {
     const [open, setOpen] = useState(false)
@@ -46,7 +47,7 @@ export function NewGroup() {
                             Create a new tracker for a module here.
                         </DialogDescription>
                     </DialogHeader>
-                    <NewGroupForm/>
+                    <NewGroupForm setOpen={setOpen}/>
                 </DialogContent>
             </Dialog>
         )
@@ -64,14 +65,20 @@ export function NewGroup() {
                         Create a new tracker for a module here.
                     </DrawerDescription>
                 </DrawerHeader>
-                <NewGroupForm className="p-4"/>
+                <NewGroupForm className="p-4" setOpen={setOpen}/>
             </DrawerContent>
         </Drawer>
     )
 }
 
-function NewGroupForm({ className }: ComponentProps<"form">) {
+interface NewGroup {
+    className?: string,
+    setOpen: Dispatch<SetStateAction<boolean>>
+}
+
+function NewGroupForm({ className, setOpen }: NewGroup) {
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const groupSchema = z.object({
         name: z.string(),
@@ -94,7 +101,6 @@ function NewGroupForm({ className }: ComponentProps<"form">) {
             return;
         }
 
-        // TODO: Make inserting data with error checking a method
         const { data, error: initial_error } = await supabase.from("groups").insert({
             name: values.name,
             short_form: values.short_form,
@@ -108,6 +114,7 @@ function NewGroupForm({ className }: ComponentProps<"form">) {
             })
 
             setLoading(false);
+            setOpen(false);
             return
         }
 
@@ -121,6 +128,7 @@ function NewGroupForm({ className }: ComponentProps<"form">) {
                 description: users_error.message
             })
             setLoading(false);
+            setOpen(false);
             return
         }
 
@@ -134,11 +142,14 @@ function NewGroupForm({ className }: ComponentProps<"form">) {
                 description: admin_error.message
             })
             setLoading(false);
+            setOpen(false);
             return
         }
 
         toast.success("Successfully added group!")
         setLoading(false);
+        setOpen(false);
+        router.refresh();
     }
 
     return (

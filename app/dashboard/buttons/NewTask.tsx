@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import {
     Dialog,
@@ -32,6 +32,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Database } from "@/lib/database.types";
+import { useRouter } from "next/navigation";
 
 interface Groups {
     groups: Database["public"]["Tables"]["groups"]["Row"][];
@@ -54,7 +55,7 @@ export function NewTask({ groups }: Groups) {
                             Create a new task here.
                         </DialogDescription>
                     </DialogHeader>
-                    <NewTaskForm groups={groups}/>
+                    <NewTaskForm groups={groups} setOpen={setOpen}/>
                 </DialogContent>
             </Dialog>
         )
@@ -72,7 +73,7 @@ export function NewTask({ groups }: Groups) {
                         Create a new task here.
                     </DrawerDescription>
                 </DrawerHeader>
-                <NewTaskForm className="p-4" groups={groups}/>
+                <NewTaskForm className="p-4" groups={groups} setOpen={setOpen}/>
             </DrawerContent>
         </Drawer>
     )
@@ -80,11 +81,13 @@ export function NewTask({ groups }: Groups) {
 
 interface TaskProp {
     className?: string,
-    groups: Database["public"]["Tables"]["groups"]["Row"][];
+    groups: Database["public"]["Tables"]["groups"]["Row"][],
+    setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-function NewTaskForm({ className, groups }: TaskProp) {
+function NewTaskForm({ className, groups, setOpen }: TaskProp) {
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const taskSchema = z.object({
         module: z.string(),
@@ -114,12 +117,14 @@ function NewTaskForm({ className, groups }: TaskProp) {
         })
 
         setLoading(false);
+        setOpen(false);
         if (error) {
             toast.error("Something went wrong!", {
                 description: error.message
             })
         } else {
             toast.success("Successfully added task!")
+            router.refresh()
         }
     }
 
