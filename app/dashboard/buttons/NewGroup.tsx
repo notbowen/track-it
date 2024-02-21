@@ -81,8 +81,8 @@ function NewGroupForm({ className, setOpen }: NewGroup) {
     const router = useRouter();
 
     const groupSchema = z.object({
-        name: z.string(),
-        short_form: z.string(),
+        name: z.string().min(1),
+        short_form: z.string().min(1),
         allow_all: z.boolean().optional()
     });
 

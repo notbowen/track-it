@@ -90,8 +90,8 @@ function NewTaskForm({ className, groups, setOpen }: TaskProp) {
     const router = useRouter();
 
     const taskSchema = z.object({
-        module: z.string(),
-        name: z.string(),
+        module: z.string().min(1),
+        name: z.string().min(1),
         due_date: z.date()
     });
 
