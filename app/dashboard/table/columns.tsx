@@ -10,35 +10,46 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { InfoIcon, MoreHorizontal } from "lucide-react";
 import { DataTableColumnHeader } from "@/app/dashboard/table/data-table-column-header";
 import { Database } from "@/lib/database.types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { createClient } from "@/utils/supabase/client";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
+import ModuleRow from "@/app/dashboard/table/ModuleRow";
 
 export type Task = {
     task_id: string,
+    group_id: string,
     module: string,
+    module_name: string,
     name: string,
     due_date: Date,
     progress: Database["public"]["Enums"]["progress"],
     not_started: number,
     in_progress: number,
     completed: number,
-    is_admin: boolean
+    is_admin: boolean,
+    allow_all: boolean
 }
 
 export const columns: ColumnDef<Task>[] = [
     {
-        accessorKey: "module",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Module"/>
-        )
-    },
-    {
         accessorKey: "name",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Task"/>
+        )
+    },
+    {
+        accessorKey: "module",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Module"/>),
+        cell: ({ row }) => (
+            <ModuleRow row={row}/>
         )
     },
     {
