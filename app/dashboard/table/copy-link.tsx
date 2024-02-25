@@ -1,12 +1,32 @@
 import { createClient } from "@/utils/supabase/client";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
-export default async function CopyLink(group_id: string) {
-    const supabase = createClient();
+interface Props {
+    group_id: string
+}
 
-    const { data } = await supabase.from("invites").select("id, group_id").eq("group_id", group_id).single();
-    if (data)
-        return data;
+export default function CopyLink({ group_id }: Props) {
+    const copyLink = async () => {
+        const supabase = createClient();
 
-    const { data: res } = await supabase.from("invites").insert({ group_id: group_id }).select("id, group_id").single();
-    return res;
+        let { data, error } = await supabase.from("invites").select("id, group_id").eq("group_id", group_id).single();
+        if (!data) {
+            let {} = {
+                data,
+                error
+            } = await supabase.from("invites").insert({ group_id: group_id }).select("id, group_id").single();
+        }
+
+        if (!data || error) {
+            toast.error("Something went wrong!", {
+                description: error?.message ?? "Check the console for further information!"
+            })
+        } else {
+            await navigator.clipboard.writeText(`${window.location.origin}/invite?code=${data.id}`)
+            toast.success("Invite link copied to clipboard!")
+        }
+    }
+
+    return <Button className="w-full" onClick={copyLink}>Invite</Button>
 }

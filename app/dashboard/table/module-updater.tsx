@@ -15,6 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
 import CopyLink from "@/app/dashboard/table/copy-link";
+import LeaveModule from "@/app/dashboard/table/leave-module";
 
 interface Props {
     row: Row<Task>
@@ -65,17 +66,6 @@ export default function ModuleUpdater({ row }: Props) {
         setLoading(false);
         setOpen(false);
         router.refresh();
-    }
-
-    async function copyLink(group_id: string) {
-        const res = await CopyLink(group_id);
-        if (!res) {
-            toast.error("Something went wrong!")
-            return
-        }
-
-        await navigator.clipboard.writeText(`${window.location.origin}/invite?code=${res.id}`)
-        toast.success("Invite link copied to clipboard!")
     }
 
     return (
@@ -137,8 +127,8 @@ export default function ModuleUpdater({ row }: Props) {
                     </Form>
                     <Separator/>
                     <div className="flex flex-row justify-between w-full gap-2">
-                        <Button className="w-full" onClick={() => copyLink(row.original.group_id)}>Invite</Button>
-                        <Button className="w-full" variant="destructive">Leave</Button>
+                        <CopyLink group_id={row.original.group_id}/>
+                        <LeaveModule group_id={row.original.group_id}/>
                     </div>
                 </div>
             </PopoverContent>
