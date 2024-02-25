@@ -179,7 +179,7 @@ function NewGroupForm({ className, setOpen }: NewGroup) {
                     control={form.control}
                     name="allow_all"
                     render={({ field }) => (<FormItem>
-                        <FormLabel>Allow anyone to create tasks</FormLabel>
+                        <FormLabel>Allow anyone to create and delete tasks</FormLabel>
                         <FormControl>
                             <Checkbox checked={field.value} onCheckedChange={field.onChange} className="mx-2"/>
                         </FormControl>

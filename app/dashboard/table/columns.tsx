@@ -16,6 +16,7 @@ import { Database } from "@/lib/database.types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { createClient } from "@/utils/supabase/client";
 import ModuleUpdater from "@/app/dashboard/table/module-updater";
+import { toast } from "sonner";
 
 export type Task = {
     task_id: string,
@@ -98,6 +99,21 @@ export const columns: ColumnDef<Task>[] = [
         cell: ({ row }) => {
             const task = row.original;
 
+            const deleteTask = async () => {
+                const supabase = createClient();
+                const { error } = await supabase.from("tasks").delete().eq("id", row.original.task_id);
+
+                if (!error) {
+                    toast.success("Successfully removed task!")
+                } else {
+                    toast.error("Something went wrong!", {
+                        description: error.message
+                    })
+                }
+
+                window.location.reload()
+            }
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -111,9 +127,9 @@ export const columns: ColumnDef<Task>[] = [
                         <DropdownMenuItem>{task.completed} Completed</DropdownMenuItem>
                         <DropdownMenuItem>{task.in_progress} In Progress</DropdownMenuItem>
                         <DropdownMenuItem>{task.not_started} Incomplete</DropdownMenuItem>
-                        {task.is_admin && <>
+                        {(task.is_admin || task.allow_all) && <>
                             <DropdownMenuSeparator/>
-                            <DropdownMenuItem>Delete Task (for everyone)</DropdownMenuItem>
+                            <DropdownMenuItem onClick={deleteTask}>Delete Task (for everyone)</DropdownMenuItem>
                         </>
                         }
                     </DropdownMenuContent>
