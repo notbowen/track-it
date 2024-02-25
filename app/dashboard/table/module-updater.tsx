@@ -14,12 +14,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
+import CopyLink from "@/app/dashboard/table/copy-link";
 
 interface Props {
     row: Row<Task>
 }
 
-export default function ModuleRow({ row }: Props) {
+export default function ModuleUpdater({ row }: Props) {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -64,6 +65,17 @@ export default function ModuleRow({ row }: Props) {
         setLoading(false);
         setOpen(false);
         router.refresh();
+    }
+
+    async function copyLink(group_id: string) {
+        const res = await CopyLink(group_id);
+        if (!res) {
+            toast.error("Something went wrong!")
+            return
+        }
+
+        await navigator.clipboard.writeText(`${window.location.origin}/invite?code=${res.id}`)
+        toast.success("Invite link copied to clipboard!")
     }
 
     return (
@@ -125,7 +137,7 @@ export default function ModuleRow({ row }: Props) {
                     </Form>
                     <Separator/>
                     <div className="flex flex-row justify-between w-full gap-2">
-                        <Button className="w-full">Invite</Button>
+                        <Button className="w-full" onClick={() => copyLink(row.original.group_id)}>Invite</Button>
                         <Button className="w-full" variant="destructive">Leave</Button>
                     </div>
                 </div>

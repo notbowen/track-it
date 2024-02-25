@@ -15,7 +15,7 @@ import { DataTableColumnHeader } from "@/app/dashboard/table/data-table-column-h
 import { Database } from "@/lib/database.types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { createClient } from "@/utils/supabase/client";
-import ModuleRow from "@/app/dashboard/table/ModuleRow";
+import ModuleUpdater from "@/app/dashboard/table/module-updater";
 
 export type Task = {
     task_id: string,
@@ -44,7 +44,7 @@ export const columns: ColumnDef<Task>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Module"/>),
         cell: ({ row }) => (
-            <ModuleRow row={row}/>
+            <ModuleUpdater row={row}/>
         )
     },
     {
