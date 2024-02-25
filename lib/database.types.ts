@@ -247,6 +247,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_group_id: {
+        Args: {
+          invite_id: string
+        }
+        Returns: string
+      }
       is_user_in_group: {
         Args: {
           _user_id: string
