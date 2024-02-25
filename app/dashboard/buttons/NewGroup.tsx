@@ -81,8 +81,8 @@ function NewGroupForm({ className, setOpen }: NewGroup) {
     const router = useRouter();
 
     const groupSchema = z.object({
-        name: z.string(),
-        short_form: z.string(),
+        name: z.string().min(1),
+        short_form: z.string().min(1),
         allow_all: z.boolean().optional()
     });
 
@@ -179,7 +179,7 @@ function NewGroupForm({ className, setOpen }: NewGroup) {
                     control={form.control}
                     name="allow_all"
                     render={({ field }) => (<FormItem>
-                        <FormLabel>Allow anyone to create tasks</FormLabel>
+                        <FormLabel>Allow anyone to create and delete tasks</FormLabel>
                         <FormControl>
                             <Checkbox checked={field.value} onCheckedChange={field.onChange} className="mx-2"/>
                         </FormControl>

@@ -15,30 +15,37 @@ import { DataTableColumnHeader } from "@/app/dashboard/table/data-table-column-h
 import { Database } from "@/lib/database.types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { createClient } from "@/utils/supabase/client";
+import ModuleUpdater from "@/app/dashboard/table/module-updater";
+import { toast } from "sonner";
 
 export type Task = {
     task_id: string,
+    group_id: string,
     module: string,
+    module_name: string,
     name: string,
     due_date: Date,
     progress: Database["public"]["Enums"]["progress"],
     not_started: number,
     in_progress: number,
     completed: number,
-    is_admin: boolean
+    is_admin: boolean,
+    allow_all: boolean
 }
 
 export const columns: ColumnDef<Task>[] = [
     {
-        accessorKey: "module",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Module"/>
-        )
-    },
-    {
         accessorKey: "name",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Task"/>
+        )
+    },
+    {
+        accessorKey: "module",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Module"/>),
+        cell: ({ row }) => (
+            <ModuleUpdater row={row}/>
         )
     },
     {
@@ -92,6 +99,21 @@ export const columns: ColumnDef<Task>[] = [
         cell: ({ row }) => {
             const task = row.original;
 
+            const deleteTask = async () => {
+                const supabase = createClient();
+                const { error } = await supabase.from("tasks").delete().eq("id", row.original.task_id);
+
+                if (!error) {
+                    toast.success("Successfully removed task!")
+                } else {
+                    toast.error("Something went wrong!", {
+                        description: error.message
+                    })
+                }
+
+                window.location.reload()
+            }
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -105,9 +127,9 @@ export const columns: ColumnDef<Task>[] = [
                         <DropdownMenuItem>{task.completed} Completed</DropdownMenuItem>
                         <DropdownMenuItem>{task.in_progress} In Progress</DropdownMenuItem>
                         <DropdownMenuItem>{task.not_started} Incomplete</DropdownMenuItem>
-                        {task.is_admin && <>
+                        {(task.is_admin || task.allow_all) && <>
                             <DropdownMenuSeparator/>
-                            <DropdownMenuItem>Delete Task (for everyone)</DropdownMenuItem>
+                            <DropdownMenuItem onClick={deleteTask}>Delete Task (for everyone)</DropdownMenuItem>
                         </>
                         }
                     </DropdownMenuContent>

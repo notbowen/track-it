@@ -90,8 +90,8 @@ function NewTaskForm({ className, groups, setOpen }: TaskProp) {
     const router = useRouter();
 
     const taskSchema = z.object({
-        module: z.string(),
-        name: z.string(),
+        module: z.string().min(1),
+        name: z.string().min(1),
         due_date: z.date()
     });
 
@@ -119,8 +119,8 @@ function NewTaskForm({ className, groups, setOpen }: TaskProp) {
         setLoading(false);
         setOpen(false);
         if (error) {
-            toast.error("Something went wrong!", {
-                description: error.message
+            toast.error("You are not allowed to add a task in this module!", {
+                description: "Tell an admin to allow everyone to create tasks."
             })
         } else {
             toast.success("Successfully added task!")
@@ -144,9 +144,11 @@ function NewTaskForm({ className, groups, setOpen }: TaskProp) {
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    {groups.map(group => (
+                                    {groups.length !== 0 ? groups.map(group => (
                                         <SelectItem key={group.id} value={group.id}>{group.name}</SelectItem>
-                                    ))}
+                                    )) : (
+                                        <SelectItem disabled={true} value="none">No modules found!</SelectItem>
+                                    )}
                                 </SelectContent>
                             </Select>
                         </FormItem>
