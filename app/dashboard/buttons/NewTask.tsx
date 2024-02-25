@@ -119,8 +119,8 @@ function NewTaskForm({ className, groups, setOpen }: TaskProp) {
         setLoading(false);
         setOpen(false);
         if (error) {
-            toast.error("Something went wrong!", {
-                description: error.message
+            toast.error("You are not allowed to add a task in this module!", {
+                description: "Tell an admin to allow everyone to create tasks."
             })
         } else {
             toast.success("Successfully added task!")
