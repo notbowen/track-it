@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     }
 
     const { data } = await supabase.from("users_groups").select().eq("group_id", group_id);
-    if (data) {
+    if (data?.length && data.length > 0) {
         return redirect("/dashboard")
     }
 
