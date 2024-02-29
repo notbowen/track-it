@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { InfoIcon, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
 import { Task } from "@/app/dashboard/table/columns";
 import { Row } from "@tanstack/react-table";
 import { useState } from "react";
@@ -16,6 +15,9 @@ import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
 import CopyLink from "@/app/dashboard/table/copy-link";
 import LeaveModule from "@/app/dashboard/table/leave-module";
+import ModuleDeleter from "@/app/dashboard/table/module-deleter";
+import { Separator } from "@/components/ui/separator";
+import AddAdmins from "@/app/dashboard/table/add-admins";
 
 interface Props {
     row: Row<Task>
@@ -78,9 +80,11 @@ export default function ModuleUpdater({ row }: Props) {
                     <div className="space-y-2">
                         <h4 className="font-medium leading-none">{row.original.module}</h4>
                         <p className="text-sm text-muted-foreground">
-                            Edit the properties of this module
+                            {row.original.is_admin && "Edit the properties of this module"}
+                            {!row.original.is_admin && "Invite others or leave the module"}
                         </p>
                     </div>
+                    {row.original.is_admin && <>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
                             <FormField
@@ -125,11 +129,17 @@ export default function ModuleUpdater({ row }: Props) {
                             </Button>
                         </form>
                     </Form>
-                    <Separator/>
+                        <Separator/></>}
                     <div className="flex flex-row justify-between w-full gap-2">
                         <CopyLink group_id={row.original.group_id}/>
                         <LeaveModule group_id={row.original.group_id}/>
                     </div>
+                    {row.original.is_admin && <>
+                        <div className="flex flex-col justify-between w-full gap-2">
+                            <AddAdmins group_id={row.original.group_id}/>
+                            <ModuleDeleter group_id={row.original.group_id}/>
+                    </div>
+                    </>}
                 </div>
             </PopoverContent>
         </Popover>

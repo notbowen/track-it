@@ -13,6 +13,7 @@ import { cookies, headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { AuthUser } from "@supabase/supabase-js";
+import NavCopy from "@/components/NavCopy";
 
 export default async function NavProfile({ user }: { user: AuthUser }) {
     const cookieStore = cookies();
@@ -62,6 +63,7 @@ export default async function NavProfile({ user }: { user: AuthUser }) {
                         Profile
                     </DropdownMenuItem>
                 </Link>
+                <NavCopy/>
                 <form action={signOut}>
                     <DropdownMenuItem>
                         <button className="flex flex-row cursor-default">
