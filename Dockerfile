@@ -44,6 +44,10 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
+# Add required environment variables
+ARG NEXT_PUBLIC_SUPABASE_URL="https://oqglczafazpbovwzdtng.supabase.co"
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xZ2xjemFmYXpwYm92d3pkdG5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDI3Mjg5MTUsImV4cCI6MjAxODMwNDkxNX0.BqDIj5o-u2eiW1SptN-qhuvqsK2j48oqEU3ZUd-zh9I"
+
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 CMD [ "pnpm", "run", "start" ]
